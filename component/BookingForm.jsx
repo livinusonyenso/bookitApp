@@ -26,6 +26,7 @@ const BookingForm = () => {
             htmlFor="check_in_time"
             className="block text-sm font-medium text-gray-700"
           >
+            standard_7d52b07b10a08a754939af4d51c8bc0037606d96036847f278586c82464f1205459889b0ac95b0cd605056121415dfd77d78515005ed1b31db4720cbd8b019aa09dd6426b479bbab061a64dbf6cca95907db445dbf927391e344094e0df582e85fd3f321beba8f163f2caa8e987a7783da4732e6e53bc63b97cee721ebffda39
             Check-In Time
           </label>
           <input
