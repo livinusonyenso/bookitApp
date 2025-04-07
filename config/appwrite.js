@@ -1,42 +1,63 @@
-import { Client, Database, Account, Storage } from "node-appwrite";
+import { Client, Databases, Account, Storage } from "node-appwrite";
 
-//adminclient
+// Admin Client
 const CreateAdminClient = async () => {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT)
-    .setKey(process.env.NEXT_APPWRITE_KEY);
-  return {
-    get account() {
-      return new Account(client);
-    },
+  try {
+    console.log("Creating Admin Client...");
 
-    get database() {
-      return new Database(client);
-    },
-    get storage() {
-      return new Storage(client);
-    },
-  };
+    const client = new Client()
+      .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
+      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT)
+      .setKey(process.env.NEXT_APPWRITE_KEY);
+
+    console.log("Admin Client created successfully.");
+
+    return {
+      get account() {
+        return new Account(client);
+      },
+      get database() {
+        return new Databases(client);
+      },
+      get storage() {
+        return new Storage(client);
+      },
+    };
+  } catch (error) {
+    console.error("Error creating Admin Client:", error);
+    throw error;  // Re-throw to be handled by the caller
+  }
 };
 
+// Session Client
 const CreateSessionClient = async (session) => {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
+  try {
+    console.log("Creating Session Client...");
 
-  if (session) {
-    client.setSession(session);
-  }
-  return {
-    get account() {
-      return new Account(client);
-    },
+    const client = new Client()
+      .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
+      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
 
-    get database() {
-      return new Database(client);
+    // If session exists, set it
+    if (session) {
+      console.log("Setting session for client...");
+      client.setSession(session);
     }
-  };
+
+    console.log("Session Client created successfully.");
+
+    return {
+      get account() {
+        return new Account(client);
+      },
+      get database() {
+        return new Databases(client);
+      },
+    };
+  } catch (error) {
+    console.error("Error creating Session Client:", error);
+    throw error;  // Re-throw to be handled by the caller
+  }
 };
 
 export { CreateAdminClient, CreateSessionClient };

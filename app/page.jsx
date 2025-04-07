@@ -1,10 +1,10 @@
 import RoomCard from "@/component/roomCard";
-import roomsData from "@/data/rooms.json";
 import Heading from "@/component/Heading";
+import getAllRooms from "@/actions/getAllRooms";
 
 
-export default function Home() {
-  const rooms = roomsData || [];
+export default async function Home() {
+  const rooms = await getAllRooms();
   // console.log("Rooms Data:", rooms);
   return (
     <>
