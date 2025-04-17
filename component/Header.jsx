@@ -1,10 +1,29 @@
-import react from "react"
+'use client'
+
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
 import logo from '@/assets/images/logo.svg'
 import {FaUser, FaSignInAlt, FaSignOutAlt, FaBuilding} from 'react-icons/fa'
-
+import destroySession from "@/actions/destroySession"
+import { toast } from "react-toastify"
+import { useAuth } from "@/context/authContext"
 function Header() {
+  const router = useRouter()
+
+  const {isAuthenticated,setIsAuthenticated} = useAuth()
+
+
+  const  handleLogOut  =async () =>{
+    const {success, error} = await destroySession()
+    setIsAuthenticated(false)
+    if(success){
+    router.push('/login')
+    }else{
+       toast.error(error)
+    }
+
+  }
   return (
     <header className="bg-gray-100">
     <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -22,6 +41,8 @@ function Header() {
                 Rooms
               </Link>
               {/* <!-- Logged In Only --> */}
+              {isAuthenticated && (
+                <>
               <Link
                 href="/bookings"
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
@@ -29,11 +50,13 @@ function Header() {
                 Bookings
               </Link>
               <Link
-                href="/rooms/add "
+                href="/room/add"
                 className="rounded-md px-3 py-2 text-sm font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
               >
                 Add Room
               </Link>
+              </>)}
+              
             </div>
           </div>
         </div>
@@ -41,7 +64,10 @@ function Header() {
         <div className="ml-auto">
           <div className="ml-4 flex items-center md:ml-6">
             {/* <!-- Logged Out Only --> */}
-            <Link
+
+            {!isAuthenticated && (
+              <>
+                          <Link
               href="/login"
               className="mr-3 text-gray-800 hover:text-gray-600"
             >
@@ -53,15 +79,25 @@ function Header() {
             >
               <FaUser className="inline mr-1"/> Register
             </Link>
-            <a href="/rooms/my">
+              </>
+            )}
+
+            {isAuthenticated && (
+              <>
+               <Link href="/rooms/my">
             <FaBuilding className="inline mr-1"/> My Rooms
-            </a>
-            <Link
+            </Link>
+            <button
+              onClick={handleLogOut}
               href="/login"
               className="mx-3 text-gray-800 hover:text-gray-600"
             >
               <FaSignInAlt className="inline mr-1"/> Sign Out
-            </Link>
+            </button>
+              </>
+            )}
+           
+          
           </div>
         </div>
       </div>
@@ -77,7 +113,9 @@ function Header() {
           Rooms
         </Link>
         {/* <!-- Logged In Only --> */}
-        <Link
+        {isAuthenticated && (
+          <>
+             <Link
           href="/bookings"
           className="block rounded-md px-3 py-2 text-base font-medium text-gray-800 hover:bg-gray-700 hover:text-white"
         >
@@ -89,6 +127,9 @@ function Header() {
         >
           Add Room
         </Link>
+          </>
+        )}
+     
       </div>
     </div>
   </header>

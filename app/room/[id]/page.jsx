@@ -42,9 +42,9 @@ const PageHome = async ({ params }) => {
               </li>
               <li>
                 <span className="font-semibold text-gray-800">
-                  Availability:
+                  avialablility:
                 </span>
-                {room.availability}
+                {room.avialablility}
               </li>
               <li>
                 <span className="font-semibold text-gray-800">Price:</span>$

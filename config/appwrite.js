@@ -36,7 +36,8 @@ const CreateSessionClient = async (session) => {
 
     const client = new Client()
       .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT)
-      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT);
+      .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT)
+     
 
     // If session exists, set it
     if (session) {
